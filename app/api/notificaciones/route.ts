@@ -100,7 +100,7 @@ export async function GET(request: Request) {
 </body></html>`;
 
     await resend.emails.send({
-      from: "GarantíasApp <notificaciones@tudominio.com>",
+      from: "GarantíasApp <onboarding@resend.dev>",
       to: email,
       subject: `🛡️ Tenés ${items.length} garantía${items.length !== 1 ? "s" : ""} por vencer`,
       html,
