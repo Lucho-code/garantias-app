@@ -25,9 +25,15 @@ export const STATUS_LABELS: Record<WarrantyStatus, string> = {
 };
 
 export const STATUS_COLORS: Record<WarrantyStatus, string> = {
-  active: "bg-emerald-100 text-emerald-800",
-  expiring: "bg-amber-100 text-amber-800",
-  expired: "bg-red-100 text-red-800",
+  active: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
+  expiring: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
+  expired: "bg-red-50 text-red-700 ring-1 ring-red-200",
+};
+
+export const STATUS_DOT: Record<WarrantyStatus, string> = {
+  active: "bg-emerald-500",
+  expiring: "bg-amber-500",
+  expired: "bg-red-500",
 };
 
 export const CATEGORY_ICONS: Record<string, string> = {

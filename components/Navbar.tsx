@@ -26,17 +26,24 @@ export default function Navbar({ email }: { email: string }) {
             <span className="font-bold text-gray-900 text-lg">GarantíasApp</span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/garantias/nueva"
-              className="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3.5 py-2 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 bg-gradient-to-br from-indigo-500 to-indigo-700 hover:opacity-90 text-white text-sm font-medium px-3 sm:px-3.5 py-2 rounded-lg transition-all shadow-sm shadow-indigo-200"
             >
               <Plus className="w-4 h-4" />
-              Nueva garantía
+              <span className="hidden sm:inline">Nueva garantía</span>
             </Link>
 
-            <div className="flex items-center gap-2 pl-3 border-l border-gray-200">
-              <span className="text-sm text-gray-500 hidden sm:block">{email}</span>
+            <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-gray-200">
+              <div
+                className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center shrink-0 cursor-default"
+                title={email}
+              >
+                <span className="text-xs font-semibold text-indigo-700">
+                  {email.charAt(0).toUpperCase()}
+                </span>
+              </div>
               <button
                 onClick={handleLogout}
                 className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"

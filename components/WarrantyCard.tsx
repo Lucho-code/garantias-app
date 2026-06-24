@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Calendar, Store, Tag, ChevronRight } from "lucide-react";
 import { Warranty, getWarrantyStatus, getDaysRemaining } from "@/types/warranty";
-import { formatDate, STATUS_LABELS, STATUS_COLORS, CATEGORY_ICONS } from "@/lib/utils";
+import { formatDate, STATUS_LABELS, STATUS_COLORS, STATUS_DOT, CATEGORY_ICONS } from "@/lib/utils";
 
 export default function WarrantyCard({ warranty }: { warranty: Warranty }) {
   const status = getWarrantyStatus(warranty.expiry_date);
@@ -9,7 +9,7 @@ export default function WarrantyCard({ warranty }: { warranty: Warranty }) {
 
   return (
     <Link href={`/garantias/${warranty.id}`}>
-      <div className="bg-white border border-gray-200 rounded-xl p-5 hover:border-indigo-300 hover:shadow-md transition-all group cursor-pointer">
+      <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-indigo-200 transition-all group cursor-pointer">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
             <span className="text-2xl">{CATEGORY_ICONS[warranty.category] ?? "📦"}</span>
@@ -28,7 +28,8 @@ export default function WarrantyCard({ warranty }: { warranty: Warranty }) {
         </div>
 
         <div className="flex flex-wrap gap-2 mb-3">
-          <span className={`inline-flex items-center text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_COLORS[status]}`}>
+          <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_COLORS[status]}`}>
+            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${STATUS_DOT[status]}`} />
             {STATUS_LABELS[status]}
           </span>
           <span className="inline-flex items-center text-xs text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
