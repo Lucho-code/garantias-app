@@ -6,6 +6,18 @@ Aplicación web para gestionar garantías de electrodomésticos, electrónica, v
 
 ---
 
+## Screenshots
+
+| Dashboard | Lista de garantías |
+|---|---|
+| ![Dashboard](public/screenshots/dashboard.png) | ![Lista](public/screenshots/lista.png) |
+
+| Nueva garantía | Inicio de sesión |
+|---|---|
+| ![Formulario](public/screenshots/formulario.png) | ![Login](public/screenshots/login.png) |
+
+---
+
 ## Características
 
 - **Gestión completa** — Creá, editá y eliminá garantías con todos los detalles del producto
