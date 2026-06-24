@@ -6,10 +6,12 @@ import { createClient } from "@/lib/supabase/client";
 import { CATEGORIES, Warranty, WarrantyInsert } from "@/types/warranty";
 import { calcExpiryDate } from "@/lib/utils";
 import { Save, Trash2 } from "lucide-react";
+import FileUpload from "@/components/FileUpload";
 
 interface Props {
-  initial?: Warranty;
+  initial?: Warranty & { share_token?: string };
   mode: "create" | "edit";
+  userId: string;
 }
 
 const EMPTY: Omit<WarrantyInsert, "expiry_date"> = {
@@ -26,7 +28,7 @@ const EMPTY: Omit<WarrantyInsert, "expiry_date"> = {
   image_url: "",
 };
 
-export default function WarrantyForm({ initial, mode }: Props) {
+export default function WarrantyForm({ initial, mode, userId }: Props) {
   const router = useRouter();
   const [form, setForm] = useState<Omit<WarrantyInsert, "expiry_date">>(() =>
     initial
@@ -107,7 +109,7 @@ export default function WarrantyForm({ initial, mode }: Props) {
               value={form.name}
               onChange={(e) => set("name", e.target.value)}
               className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="Ej: Heladera Freezer, Smart TV 55&quot;"
+              placeholder='Ej: Heladera Freezer, Smart TV 55"'
             />
           </div>
 
@@ -141,9 +143,7 @@ export default function WarrantyForm({ initial, mode }: Props) {
               onChange={(e) => set("category", e.target.value)}
               className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
             >
-              {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
+              {CATEGORIES.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
             </select>
           </div>
 
@@ -230,18 +230,25 @@ export default function WarrantyForm({ initial, mode }: Props) {
       </div>
 
       <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4">
-        <h2 className="font-semibold text-gray-800">Notas y documentos</h2>
+        <h2 className="font-semibold text-gray-800">Archivos</h2>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">URL del comprobante / ticket</label>
-          <input
-            type="url"
-            value={form.receipt_url ?? ""}
-            onChange={(e) => set("receipt_url", e.target.value)}
-            className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            placeholder="https://drive.google.com/..."
-          />
-        </div>
+        <FileUpload
+          userId={userId}
+          warrantyId={initial?.id}
+          label="Foto del producto"
+          accept="image/jpeg,image/png,image/webp,image/heic"
+          currentUrl={form.image_url}
+          onUpload={(url) => set("image_url", url)}
+        />
+
+        <FileUpload
+          userId={userId}
+          warrantyId={initial?.id}
+          label="Comprobante de compra (foto o PDF)"
+          accept="image/jpeg,image/png,image/webp,application/pdf"
+          currentUrl={form.receipt_url}
+          onUpload={(url) => set("receipt_url", url)}
+        />
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Notas adicionales</label>
@@ -256,9 +263,7 @@ export default function WarrantyForm({ initial, mode }: Props) {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg">
-          {error}
-        </div>
+        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg">{error}</div>
       )}
 
       <div className="flex items-center justify-between">

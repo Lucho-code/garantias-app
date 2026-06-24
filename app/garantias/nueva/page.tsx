@@ -22,7 +22,7 @@ export default async function NuevaGarantiaPage() {
           <h1 className="text-2xl font-bold text-gray-900">Nueva garantía</h1>
           <p className="text-gray-500 mt-1">Registrá un nuevo producto con su garantía</p>
         </div>
-        <WarrantyForm mode="create" />
+        <WarrantyForm mode="create" userId={user.id} />
       </main>
     </div>
   );

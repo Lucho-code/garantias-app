@@ -6,11 +6,7 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { Warranty } from "@/types/warranty";
 
-export default async function EditarGarantiaPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function EditarGarantiaPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -31,7 +27,7 @@ export default async function EditarGarantiaPage({
           <h1 className="text-2xl font-bold text-gray-900">Editar garantía</h1>
           <p className="text-gray-500 mt-1">{(data as Warranty).name}</p>
         </div>
-        <WarrantyForm mode="edit" initial={data as Warranty} />
+        <WarrantyForm mode="edit" initial={data as Warranty & { share_token: string }} userId={user.id} />
       </main>
     </div>
   );
