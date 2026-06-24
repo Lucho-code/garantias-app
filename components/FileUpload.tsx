@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Upload, X, FileText, Image, Loader2, ScanLine } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -52,7 +52,10 @@ export default function FileUpload({ userId, warrantyId, label, accept, currentU
     setScanning(false);
   }
 
-  const hasCameraSupport = typeof navigator !== "undefined" && !!navigator.mediaDevices?.getUserMedia;
+  const [hasCameraSupport, setHasCameraSupport] = useState(false);
+  useEffect(() => {
+    setHasCameraSupport(!!navigator.mediaDevices?.getUserMedia);
+  }, []);
 
   return (
     <>
