@@ -16,6 +16,10 @@ Aplicación web para gestionar garantías de electrodomésticos, electrónica, v
 |---|---|
 | ![Formulario](public/screenshots/formulario.png) | ![Login](public/screenshots/login.png) |
 
+| Escáner de documentos |
+|---|
+| ![Scanner](public/screenshots/scanner-section.png) |
+
 ---
 
 ## Características
@@ -25,6 +29,7 @@ Aplicación web para gestionar garantías de electrodomésticos, electrónica, v
 - **Búsqueda y filtros en tiempo real** — Filtrá por categoría, estado o buscá por nombre, marca o tienda
 - **Vista grilla / lista** — Elegí cómo visualizar tus garantías
 - **Upload de archivos** — Adjuntá foto del producto y comprobante de compra (JPG, PNG, PDF) con drag & drop
+- **Escáner de documentos** — Capturá comprobantes directamente con la cámara del dispositivo. Modo B&N para efecto de documento escaneado, flip de cámara frontal/trasera y guía de encuadre
 - **Exportar** — Descargá todas tus garantías en PDF o Excel con un clic
 - **Compartir** — Generá un link público para compartir los detalles de una garantía sin necesidad de cuenta
 - **Notificaciones por email** — Recibí un resumen diario automático de las garantías próximas a vencer
