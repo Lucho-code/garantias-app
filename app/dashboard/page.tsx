@@ -39,7 +39,7 @@ export default async function DashboardPage() {
             <AlertTriangle className="w-6 h-6 text-amber-600" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Por vencer (30 días)</p>
+            <p className="text-sm text-gray-500">Por vencer (15–60 días)</p>
             <p className="text-3xl font-bold text-gray-900">{expiring.length}</p>
           </div>
         </div>
@@ -49,7 +49,7 @@ export default async function DashboardPage() {
             <XCircle className="w-6 h-6 text-red-500" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Vencidas</p>
+            <p className="text-sm text-gray-500">Críticas (&lt;15 días)</p>
             <p className="text-3xl font-bold text-gray-900">{expired.length}</p>
           </div>
         </div>

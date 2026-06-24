@@ -11,7 +11,7 @@ const CATEGORIES = ["Electrodomésticos", "Electrónica", "Vehículos", "Herrami
 const STATUS_OPTIONS = [
   { value: "active", label: "Vigentes" },
   { value: "expiring", label: "Por vencer" },
-  { value: "expired", label: "Vencidas" },
+  { value: "expired", label: "Críticas" },
 ];
 
 export default function WarrantiesList({ warranties }: { warranties: Warranty[] }) {

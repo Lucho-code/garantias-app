@@ -1,4 +1,4 @@
-import { format, parseISO } from "date-fns";
+import { format, parseISO, addMonths } from "date-fns";
 import { es } from "date-fns/locale";
 import { WarrantyStatus } from "@/types/warranty";
 
@@ -15,15 +15,13 @@ export function formatCurrency(amount: number): string {
 }
 
 export function calcExpiryDate(purchaseDate: string, months: number): string {
-  const date = parseISO(purchaseDate);
-  date.setMonth(date.getMonth() + months);
-  return date.toISOString().split("T")[0];
+  return format(addMonths(parseISO(purchaseDate), months), "yyyy-MM-dd");
 }
 
 export const STATUS_LABELS: Record<WarrantyStatus, string> = {
   active: "Vigente",
   expiring: "Por vencer",
-  expired: "Vencida",
+  expired: "Crítica",
 };
 
 export const STATUS_COLORS: Record<WarrantyStatus, string> = {

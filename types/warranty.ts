@@ -45,8 +45,8 @@ export function getWarrantyStatus(expiry_date: string): WarrantyStatus {
   const today = new Date();
   const expiry = new Date(expiry_date);
   const diffDays = Math.ceil((expiry.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  if (diffDays < 0) return "expired";
-  if (diffDays <= 30) return "expiring";
+  if (diffDays < 15) return "expired";
+  if (diffDays <= 60) return "expiring";
   return "active";
 }
 

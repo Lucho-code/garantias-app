@@ -50,31 +50,30 @@ export default function WarrantyCard({ warranty }: { warranty: Warranty }) {
           )}
         </div>
 
-        {status !== "expired" && (
-          <div className="mt-3 pt-3 border-t border-gray-100">
+        <div className="mt-3 pt-3 border-t border-gray-100">
+          {daysRemaining >= 0 ? (
             <div className="flex items-center justify-between">
               <span className="text-xs text-gray-500">
-                {status === "expiring"
+                {status === "expired"
+                  ? `🔴 Vence en ${daysRemaining} día${daysRemaining !== 1 ? "s" : ""}`
+                  : status === "expiring"
                   ? `⚠️ Vence en ${daysRemaining} día${daysRemaining !== 1 ? "s" : ""}`
                   : `${daysRemaining} días restantes`}
               </span>
               <div className="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all ${
+                    status === "expired" ? "bg-red-400" :
                     status === "expiring" ? "bg-amber-400" : "bg-emerald-400"
                   }`}
                   style={{ width: `${Math.min(100, Math.max(5, (daysRemaining / (warranty.warranty_months * 30)) * 100))}%` }}
                 />
               </div>
             </div>
-          </div>
-        )}
-
-        {status === "expired" && (
-          <div className="mt-3 pt-3 border-t border-gray-100">
+          ) : (
             <p className="text-xs text-red-500">Venció hace {Math.abs(daysRemaining)} día{Math.abs(daysRemaining) !== 1 ? "s" : ""}</p>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </Link>
   );
