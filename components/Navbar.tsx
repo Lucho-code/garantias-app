@@ -1,0 +1,53 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ShieldCheck, LogOut, Plus } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+
+export default function Navbar({ email }: { email: string }) {
+  const router = useRouter();
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  }
+
+  return (
+    <nav className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <Link href="/dashboard" className="flex items-center gap-2.5">
+            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+              <ShieldCheck className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-bold text-gray-900 text-lg">GarantíasApp</span>
+          </Link>
+
+          <div className="flex items-center gap-3">
+            <Link
+              href="/garantias/nueva"
+              className="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3.5 py-2 rounded-lg transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              Nueva garantía
+            </Link>
+
+            <div className="flex items-center gap-2 pl-3 border-l border-gray-200">
+              <span className="text-sm text-gray-500 hidden sm:block">{email}</span>
+              <button
+                onClick={handleLogout}
+                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                title="Cerrar sesión"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
