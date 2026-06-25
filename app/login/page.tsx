@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { ShieldCheck } from "lucide-react";
+import OAuthButtons from "@/components/OAuthButtons";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -81,6 +82,15 @@ export default function LoginPage() {
               {loading ? "Ingresando..." : "Ingresar"}
             </button>
           </form>
+
+          <div className="mt-6">
+            <div className="relative flex items-center gap-3 my-5">
+              <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+              <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">o continuá con</span>
+              <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+            </div>
+            <OAuthButtons />
+          </div>
 
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
             ¿No tenés cuenta?{" "}
