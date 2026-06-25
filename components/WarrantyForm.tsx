@@ -8,6 +8,7 @@ import { calcExpiryDate } from "@/lib/utils";
 import { Save, Trash2 } from "lucide-react";
 import FileUpload from "@/components/FileUpload";
 import { toast } from "@/components/Toast";
+import ProductoCombobox from "@/components/ProductoCombobox";
 
 interface Props {
   initial?: Warranty & { share_token?: string };
@@ -109,8 +110,16 @@ export default function WarrantyForm({ initial, mode, userId }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
             <label className={labelCls}>Nombre del producto <span className="text-red-500">*</span></label>
-            <input required value={form.name} onChange={(e) => set("name", e.target.value)}
-              className={inputCls} placeholder='Ej: Heladera Freezer, Smart TV 55"' />
+            <ProductoCombobox
+              required
+              value={form.name}
+              onChange={(nombre, categoria) => {
+                set("name", nombre);
+                if (categoria) set("category", categoria);
+              }}
+              className={inputCls}
+              placeholder='Ej: Heladera, Smart TV, Notebook…'
+            />
           </div>
           <div>
             <label className={labelCls}>Marca</label>
