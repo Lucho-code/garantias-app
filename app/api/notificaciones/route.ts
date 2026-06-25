@@ -1,112 +1,156 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@supabase/supabase-js";
+
+// Cliente admin — bypasa RLS y permite auth.admin.listUsers()
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function GET(request: Request) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const supabase = await createClient();
   const today = new Date();
-  const in30 = new Date(today); in30.setDate(in30.getDate() + 30);
-  const in7  = new Date(today); in7.setDate(in7.getDate() + 7);
+  today.setHours(0, 0, 0, 0);
 
-  const { data: warranties } = await supabase
+  const fmt = (d: Date) => d.toISOString().split("T")[0];
+  const addDays = (d: Date, n: number) => { const r = new Date(d); r.setDate(r.getDate() + n); return r; };
+
+  const todayStr  = fmt(today);
+  const plus10Str = fmt(addDays(today, 10));
+  const plus30Str = fmt(addDays(today, 30));
+
+  // Garantías entre 11 y 30 días restantes, aún no avisadas a 30 días
+  const { data: batch30 } = await supabaseAdmin
     .from("warranties")
-    .select("*, user_id")
-    .gte("expiry_date", today.toISOString().split("T")[0])
-    .lte("expiry_date", in30.toISOString().split("T")[0]);
+    .select("id, user_id, name, brand, expiry_date")
+    .gt("expiry_date", plus10Str)
+    .lte("expiry_date", plus30Str)
+    .eq("notified_30", false);
 
-  if (!warranties || warranties.length === 0) {
-    return NextResponse.json({ sent: 0 });
+  // Garantías entre 0 y 10 días restantes, aún no avisadas a 10 días
+  const { data: batch10 } = await supabaseAdmin
+    .from("warranties")
+    .select("id, user_id, name, brand, expiry_date")
+    .gte("expiry_date", todayStr)
+    .lte("expiry_date", plus10Str)
+    .eq("notified_10", false);
+
+  const all = [...(batch30 ?? []), ...(batch10 ?? [])];
+  if (all.length === 0) return NextResponse.json({ sent: 0, message: "Sin garantías por notificar" });
+
+  const { data: { users } } = await supabaseAdmin.auth.admin.listUsers();
+  const emailMap = Object.fromEntries(users.map((u) => [u.id, u.email ?? ""]));
+
+  type W = { id: string; user_id: string; name: string; brand: string | null; expiry_date: string };
+  const byUser: Record<string, { w30: W[]; w10: W[] }> = {};
+
+  for (const w of (batch30 ?? []) as W[]) {
+    if (!byUser[w.user_id]) byUser[w.user_id] = { w30: [], w10: [] };
+    byUser[w.user_id].w30.push(w);
+  }
+  for (const w of (batch10 ?? []) as W[]) {
+    if (!byUser[w.user_id]) byUser[w.user_id] = { w30: [], w10: [] };
+    byUser[w.user_id].w10.push(w);
   }
 
-  const { data: { users } } = await supabase.auth.admin.listUsers();
-  const emailMap = Object.fromEntries(users.map((u) => [u.id, u.email]));
-
-  const grouped: Record<string, typeof warranties> = {};
-  for (const w of warranties) {
-    if (!grouped[w.user_id]) grouped[w.user_id] = [];
-    grouped[w.user_id].push(w);
-  }
-
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://garantias-app-gold.vercel.app";
   let sent = 0;
-  for (const [userId, items] of Object.entries(grouped)) {
+
+  for (const [userId, { w30, w10 }] of Object.entries(byUser)) {
     const email = emailMap[userId];
     if (!email) continue;
 
-    const urgent = items.filter((w) => new Date(w.expiry_date) <= in7);
-    const normal = items.filter((w) => new Date(w.expiry_date) > in7);
+    const daysLeft = (dateStr: string) =>
+      Math.ceil((new Date(dateStr).getTime() - today.getTime()) / 86400000);
 
-    const rows = (list: typeof items) =>
-      list.map((w) => {
-        const days = Math.ceil((new Date(w.expiry_date).getTime() - today.getTime()) / 86400000);
-        return `<tr style="border-bottom:1px solid #f0f0f0">
-          <td style="padding:12px 8px;font-weight:600;color:#1a1a2e">${w.name}</td>
-          <td style="padding:12px 8px;color:#6b7280">${w.brand ?? ""}</td>
-          <td style="padding:12px 8px;color:${days <= 7 ? "#dc2626" : "#d97706"};font-weight:600">${days} días</td>
-          <td style="padding:12px 8px;color:#6b7280">${w.expiry_date}</td>
-        </tr>`;
-      }).join("");
+    const tableRow = (w: W, urgent: boolean) => {
+      const days = daysLeft(w.expiry_date);
+      const color = urgent ? "#dc2626" : "#d97706";
+      return `<tr>
+        <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6">
+          <span style="font-weight:600;color:#111827">${w.name}</span>
+          ${w.brand ? `<br><span style="font-size:12px;color:#9ca3af">${w.brand}</span>` : ""}
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;font-weight:700;color:${color};white-space:nowrap">
+          ${days} día${days !== 1 ? "s" : ""}
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid #f3f4f6;color:#6b7280;white-space:nowrap">
+          ${w.expiry_date}
+        </td>
+      </tr>`;
+    };
 
-    const html = `
-<!DOCTYPE html><html><body style="font-family:system-ui,sans-serif;background:#f9fafb;margin:0;padding:20px">
-<div style="max-width:560px;margin:0 auto;background:white;border-radius:16px;overflow:hidden;border:1px solid #e5e7eb">
-  <div style="background:#4f46e5;padding:24px 28px">
-    <h1 style="color:white;margin:0;font-size:20px">🛡️ GarantíasApp</h1>
-    <p style="color:#c7d2fe;margin:4px 0 0;font-size:14px">Resumen de garantías próximas a vencer</p>
-  </div>
-  <div style="padding:24px 28px">
-    ${urgent.length > 0 ? `
-    <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:16px;margin-bottom:20px">
-      <p style="color:#dc2626;font-weight:700;margin:0 0 4px">⚠️ Vencen en menos de 7 días</p>
-      <table style="width:100%;border-collapse:collapse;margin-top:12px">
-        <thead><tr style="background:#fee2e2">
-          <th style="text-align:left;padding:8px;font-size:12px;color:#6b7280">PRODUCTO</th>
-          <th style="text-align:left;padding:8px;font-size:12px;color:#6b7280">MARCA</th>
-          <th style="text-align:left;padding:8px;font-size:12px;color:#6b7280">DÍAS</th>
-          <th style="text-align:left;padding:8px;font-size:12px;color:#6b7280">VENCE</th>
+    const total = w30.length + w10.length;
+    const subject = w10.length > 0
+      ? `⚠️ ${w10.length} garantía${w10.length > 1 ? "s" : ""} vence${w10.length === 1 ? "" : "n"} en menos de 10 días`
+      : `🛡️ ${total} garantía${total > 1 ? "s" : ""} por vencer en 30 días`;
+
+    const html = `<!DOCTYPE html><html lang="es"><body style="margin:0;padding:0;background:#f9fafb;font-family:system-ui,-apple-system,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 16px"><tr><td align="center">
+<table width="560" cellpadding="0" cellspacing="0" style="background:white;border-radius:16px;overflow:hidden;border:1px solid #e5e7eb;max-width:100%">
+  <tr><td style="background:linear-gradient(135deg,#4f46e5,#6366f1);padding:28px 32px">
+    <p style="margin:0;font-size:22px;font-weight:800;color:white">🛡️ GarantíasApp</p>
+    <p style="margin:6px 0 0;font-size:14px;color:#c7d2fe">Garantías próximas a vencer</p>
+  </td></tr>
+  <tr><td style="padding:28px 32px">
+    ${w10.length > 0 ? `
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#fef2f2;border:1px solid #fecaca;border-radius:12px;overflow:hidden;margin-bottom:24px">
+      <tr><td style="padding:14px 16px;background:#fee2e2;border-bottom:1px solid #fecaca">
+        <span style="font-weight:700;color:#b91c1c;font-size:14px">⚠️ Vencen en menos de 10 días</span>
+      </td></tr>
+      <tr><td><table width="100%" cellpadding="0" cellspacing="0">
+        <thead><tr style="background:#fef2f2">
+          <th style="text-align:left;padding:8px 12px;font-size:11px;color:#9ca3af;font-weight:600">PRODUCTO</th>
+          <th style="text-align:left;padding:8px 12px;font-size:11px;color:#9ca3af;font-weight:600">DÍAS</th>
+          <th style="text-align:left;padding:8px 12px;font-size:11px;color:#9ca3af;font-weight:600">VENCE</th>
         </tr></thead>
-        <tbody>${rows(urgent)}</tbody>
-      </table>
-    </div>` : ""}
-    ${normal.length > 0 ? `
-    <p style="font-weight:700;color:#1a1a2e;margin:0 0 12px">Vencen en los próximos 30 días</p>
-    <table style="width:100%;border-collapse:collapse">
-      <thead><tr style="background:#f9fafb">
-        <th style="text-align:left;padding:8px;font-size:12px;color:#6b7280">PRODUCTO</th>
-        <th style="text-align:left;padding:8px;font-size:12px;color:#6b7280">MARCA</th>
-        <th style="text-align:left;padding:8px;font-size:12px;color:#6b7280">DÍAS</th>
-        <th style="text-align:left;padding:8px;font-size:12px;color:#6b7280">VENCE</th>
-      </tr></thead>
-      <tbody>${rows(normal)}</tbody>
+        <tbody>${w10.map(w => tableRow(w, true)).join("")}</tbody>
+      </table></td></tr>
     </table>` : ""}
-    <div style="margin-top:24px;text-align:center">
-      <a href="${process.env.NEXT_PUBLIC_APP_URL ?? "https://garantias-app.vercel.app"}/garantias"
-        style="background:#4f46e5;color:white;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;display:inline-block">
+    ${w30.length > 0 ? `
+    <p style="margin:0 0 12px;font-weight:700;color:#111827;font-size:14px">📅 Vencen en los próximos 30 días</p>
+    <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:24px">
+      <thead><tr style="background:#f9fafb">
+        <th style="text-align:left;padding:8px 12px;font-size:11px;color:#9ca3af;font-weight:600">PRODUCTO</th>
+        <th style="text-align:left;padding:8px 12px;font-size:11px;color:#9ca3af;font-weight:600">DÍAS</th>
+        <th style="text-align:left;padding:8px 12px;font-size:11px;color:#9ca3af;font-weight:600">VENCE</th>
+      </tr></thead>
+      <tbody>${w30.map(w => tableRow(w, false)).join("")}</tbody>
+    </table>` : ""}
+    <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:8px 0">
+      <a href="${appUrl}/garantias" style="display:inline-block;background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;text-decoration:none;padding:13px 28px;border-radius:10px;font-weight:700;font-size:14px">
         Ver mis garantías →
       </a>
-    </div>
-  </div>
-  <div style="background:#f9fafb;padding:16px 28px;border-top:1px solid #e5e7eb">
-    <p style="color:#9ca3af;font-size:12px;margin:0;text-align:center">
-      Recibís este email porque tenés garantías próximas a vencer en GarantíasApp.
+    </td></tr></table>
+  </td></tr>
+  <tr><td style="background:#f9fafb;padding:16px 32px;border-top:1px solid #e5e7eb;text-align:center">
+    <p style="margin:0;color:#9ca3af;font-size:12px">
+      Recibís este email porque tenés garantías por vencer · <a href="${appUrl}" style="color:#6366f1">GarantíasApp</a>
     </p>
-  </div>
-</div>
-</body></html>`;
+  </td></tr>
+</table></td></tr></table></body></html>`;
 
-    await resend.emails.send({
-      from: "GarantíasApp <onboarding@resend.dev>",
+    const { error: sendError } = await resend.emails.send({
+      from: "GarantíasApp <notificaciones@resend.dev>",
       to: email,
-      subject: `🛡️ Tenés ${items.length} garantía${items.length !== 1 ? "s" : ""} por vencer`,
+      subject,
       html,
     });
-    sent++;
+
+    if (!sendError) {
+      if (w30.length > 0)
+        await supabaseAdmin.from("warranties").update({ notified_30: true }).in("id", w30.map(w => w.id));
+      if (w10.length > 0)
+        await supabaseAdmin.from("warranties").update({ notified_10: true }).in("id", w10.map(w => w.id));
+      sent++;
+    }
   }
 
-  return NextResponse.json({ sent });
+  return NextResponse.json({ sent, processed: all.length });
 }
