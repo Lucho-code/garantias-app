@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Warranty, getWarrantyStatus } from "@/types/warranty";
 import { formatDate, STATUS_LABELS, STATUS_COLORS, CATEGORY_ICONS } from "@/lib/utils";
 
@@ -11,7 +11,7 @@ export default function WarrantyRow({ warranty }: { warranty: Warranty }) {
         <Link href={`/garantias/${warranty.id}`} className="flex items-center gap-2.5 group">
           <span className="text-lg">{CATEGORY_ICONS[warranty.category] ?? "📦"}</span>
           <div>
-            <p className="font-medium text-gray-800 group-hover:text-indigo-700 transition-colors">{warranty.name}</p>
+            <p className="font-medium text-gray-800 group-hover:text-violet-700 transition-colors">{warranty.name}</p>
             {warranty.brand && <p className="text-xs text-gray-400">{warranty.brand}</p>}
           </div>
         </Link>

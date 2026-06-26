@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import WarrantyCard from "@/components/WarrantyCard";
 import { Warranty, getWarrantyStatus } from "@/types/warranty";
@@ -77,7 +77,7 @@ export default async function DashboardPage() {
             {active.slice(0, 6).map((w) => <WarrantyCard key={w.id} warranty={w} />)}
           </div>
           {active.length > 6 && (
-            <Link href="/garantias" className="inline-block mt-4 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+            <Link href="/garantias" className="inline-block mt-4 text-sm text-violet-600 dark:text-violet-400 hover:underline">
               Ver todas ({active.length}) →
             </Link>
           )}
@@ -86,8 +86,8 @@ export default async function DashboardPage() {
 
       {all.length === 0 && (
         <div className="bg-white dark:bg-gray-900 border border-dashed border-gray-300 dark:border-gray-700 rounded-2xl px-6 py-14 text-center transition-colors duration-200">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl mb-5">
-            <ShieldCheck className="w-8 h-8 text-indigo-500 dark:text-indigo-400" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-violet-50 dark:bg-violet-900/30 rounded-2xl mb-5">
+            <ShieldCheck className="w-8 h-8 text-violet-500 dark:text-violet-400" />
           </div>
           <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
             Registrá tu primera garantía
@@ -97,7 +97,7 @@ export default async function DashboardPage() {
           </p>
           <Link
             href="/garantias/nueva"
-            className="inline-flex items-center gap-2 bg-gradient-to-br from-indigo-500 to-indigo-700 hover:opacity-90 text-white font-medium px-6 py-3 rounded-xl transition-all shadow-sm shadow-indigo-200 dark:shadow-indigo-900/50"
+            className="inline-flex items-center gap-2 bg-gradient-to-br from-violet-500 to-violet-700 hover:opacity-90 text-white font-medium px-6 py-3 rounded-xl transition-all shadow-sm shadow-violet-200 dark:shadow-violet-900/50"
           >
             <Plus className="w-4 h-4" />
             Agregar garantía

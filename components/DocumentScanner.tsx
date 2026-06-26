@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -123,7 +123,7 @@ export default function DocumentScanner({ userId, warrantyId, onUpload, onClose 
           <X className="w-5 h-5" />
         </button>
         <div className="flex items-center gap-2 text-white font-medium text-sm">
-          <ScanLine className="w-4 h-4 text-indigo-400" />
+          <ScanLine className="w-4 h-4 text-violet-400" />
           Escanear documento
         </div>
         {step === "camera" && (
@@ -160,7 +160,7 @@ export default function DocumentScanner({ userId, warrantyId, onUpload, onClose 
                 ))}
                 {scanning && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-full h-0.5 bg-indigo-400 animate-pulse" />
+                    <div className="w-full h-0.5 bg-violet-400 animate-pulse" />
                   </div>
                 )}
               </div>
@@ -202,7 +202,7 @@ export default function DocumentScanner({ userId, warrantyId, onUpload, onClose 
             <button
               onClick={() => setScanMode(!scanMode)}
               className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-colors ${
-                scanMode ? "bg-indigo-600 text-white" : "text-white/50 hover:text-white"
+                scanMode ? "bg-violet-600 text-white" : "text-white/50 hover:text-white"
               }`}
             >
               <ScanLine className="w-5 h-5" />
@@ -237,7 +237,7 @@ export default function DocumentScanner({ userId, warrantyId, onUpload, onClose 
             </button>
             <button
               onClick={upload}
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium transition-colors"
             >
               <Check className="w-4 h-4" />
               Usar esta foto
@@ -247,7 +247,7 @@ export default function DocumentScanner({ userId, warrantyId, onUpload, onClose 
 
         {step === "uploading" && (
           <div className="flex items-center justify-center gap-2 text-white py-3">
-            <Loader2 className="w-5 h-5 animate-spin text-indigo-400" />
+            <Loader2 className="w-5 h-5 animate-spin text-violet-400" />
             <span className="text-sm">Subiendo documento...</span>
           </div>
         )}

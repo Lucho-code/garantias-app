@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -78,7 +78,7 @@ export default function FileUpload({ userId, warrantyId, label, accept, currentU
               onDrop={handleDrop}
               onDragOver={(e) => e.preventDefault()}
               onClick={() => inputRef.current?.click()}
-              className="flex-1 border-2 border-dashed border-gray-300 hover:border-indigo-400 rounded-xl p-4 cursor-pointer transition-colors group"
+              className="flex-1 border-2 border-dashed border-gray-300 hover:border-violet-400 rounded-xl p-4 cursor-pointer transition-colors group"
             >
               <input
                 ref={inputRef}
@@ -87,10 +87,10 @@ export default function FileUpload({ userId, warrantyId, label, accept, currentU
                 className="hidden"
                 onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
               />
-              <div className="flex flex-col items-center py-1 text-gray-400 group-hover:text-indigo-500 transition-colors">
+              <div className="flex flex-col items-center py-1 text-gray-400 group-hover:text-violet-500 transition-colors">
                 <Upload className="w-5 h-5 mb-1" />
                 <span className="text-xs text-center">
-                  Arrastrá o <span className="text-indigo-600 font-medium">elegí archivo</span><br />
+                  Arrastrá o <span className="text-violet-600 font-medium">elegí archivo</span><br />
                   {isImage ? "JPG, PNG, WEBP · máx 10 MB" : "PDF · máx 10 MB"}
                 </span>
               </div>
@@ -101,7 +101,7 @@ export default function FileUpload({ userId, warrantyId, label, accept, currentU
               <button
                 type="button"
                 onClick={() => setScanning(true)}
-                className="flex flex-col items-center justify-center gap-1.5 px-4 border-2 border-dashed border-indigo-300 hover:border-indigo-500 hover:bg-indigo-50 rounded-xl text-indigo-500 hover:text-indigo-700 transition-colors min-w-[80px]"
+                className="flex flex-col items-center justify-center gap-1.5 px-4 border-2 border-dashed border-violet-300 hover:border-violet-500 hover:bg-violet-50 rounded-xl text-violet-500 hover:text-violet-700 transition-colors min-w-[80px]"
               >
                 <ScanLine className="w-5 h-5" />
                 <span className="text-xs font-medium">Escanear</span>
@@ -123,8 +123,8 @@ export default function FileUpload({ userId, warrantyId, label, accept, currentU
               // eslint-disable-next-line @next/next/no-img-element
               <img src={preview} alt="preview" className="w-14 h-14 object-cover rounded-lg bg-gray-50" />
             ) : (
-              <div className="w-14 h-14 bg-indigo-50 rounded-lg flex items-center justify-center">
-                {isImage ? <Image className="w-6 h-6 text-indigo-400" /> : <FileText className="w-6 h-6 text-indigo-400" />}
+              <div className="w-14 h-14 bg-violet-50 rounded-lg flex items-center justify-center">
+                {isImage ? <Image className="w-6 h-6 text-violet-400" /> : <FileText className="w-6 h-6 text-violet-400" />}
               </div>
             )}
             <div className="flex-1 min-w-0">
@@ -135,7 +135,7 @@ export default function FileUpload({ userId, warrantyId, label, accept, currentU
                 <button
                   type="button"
                   onClick={() => inputRef.current?.click()}
-                  className="text-xs text-indigo-600 hover:underline"
+                  className="text-xs text-violet-600 hover:underline"
                 >
                   Cambiar archivo
                 </button>
@@ -145,7 +145,7 @@ export default function FileUpload({ userId, warrantyId, label, accept, currentU
                     <button
                       type="button"
                       onClick={() => setScanning(true)}
-                      className="text-xs text-indigo-600 hover:underline flex items-center gap-1"
+                      className="text-xs text-violet-600 hover:underline flex items-center gap-1"
                     >
                       <ScanLine className="w-3 h-3" /> Escanear
                     </button>

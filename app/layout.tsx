@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-screen bg-gray-50 dark:bg-gray-950 antialiased transition-colors duration-200">
+      <body className="min-h-screen bg-gray-50 dark:bg-slate-950 antialiased transition-colors duration-200">
         {children}
         <Toaster />
       </body>

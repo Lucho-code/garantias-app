@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo } from "react";
 import { LayoutGrid, List, Search } from "lucide-react";
@@ -39,7 +39,7 @@ export default function WarrantiesList({ warranties }: { warranties: Warranty[] 
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Buscar por nombre, marca, tienda..."
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
           />
         </div>
 
@@ -49,13 +49,13 @@ export default function WarrantiesList({ warranties }: { warranties: Warranty[] 
           <div className="flex border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-white dark:bg-gray-800">
             <button
               onClick={() => setView("grid")}
-              className={`p-2.5 transition-colors ${view === "grid" ? "bg-indigo-600 text-white" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"}`}
+              className={`p-2.5 transition-colors ${view === "grid" ? "bg-violet-600 text-white" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"}`}
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
             <button
               onClick={() => setView("list")}
-              className={`p-2.5 transition-colors ${view === "list" ? "bg-indigo-600 text-white" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"}`}
+              className={`p-2.5 transition-colors ${view === "list" ? "bg-violet-600 text-white" : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"}`}
             >
               <List className="w-4 h-4" />
             </button>
@@ -66,7 +66,7 @@ export default function WarrantiesList({ warranties }: { warranties: Warranty[] 
       <div className="flex flex-wrap gap-2 mb-4">
         <button
           onClick={() => { setCat(""); setStatus(""); }}
-          className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${!cat && !status ? "bg-indigo-600 text-white border-indigo-600" : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-indigo-400"}`}
+          className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${!cat && !status ? "bg-violet-600 text-white border-violet-600" : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-violet-400"}`}
         >
           Todas ({warranties.length})
         </button>
@@ -74,7 +74,7 @@ export default function WarrantiesList({ warranties }: { warranties: Warranty[] 
           <button
             key={s.value}
             onClick={() => setStatus(status === s.value ? "" : s.value)}
-            className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${status === s.value ? "bg-indigo-600 text-white border-indigo-600" : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-indigo-400"}`}
+            className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${status === s.value ? "bg-violet-600 text-white border-violet-600" : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-violet-400"}`}
           >
             {s.label}
           </button>
@@ -83,7 +83,7 @@ export default function WarrantiesList({ warranties }: { warranties: Warranty[] 
           <button
             key={c}
             onClick={() => setCat(cat === c ? "" : c)}
-            className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${cat === c ? "bg-indigo-600 text-white border-indigo-600" : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-indigo-400"}`}
+            className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${cat === c ? "bg-violet-600 text-white border-violet-600" : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:border-violet-400"}`}
           >
             {c}
           </button>
@@ -96,7 +96,7 @@ export default function WarrantiesList({ warranties }: { warranties: Warranty[] 
         <div className="text-center py-16">
           <div className="text-4xl mb-3">🔍</div>
           <p className="text-gray-500 dark:text-gray-400">No se encontraron garantías.</p>
-          <button onClick={() => { setQ(""); setCat(""); setStatus(""); }} className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline mt-2">
+          <button onClick={() => { setQ(""); setCat(""); setStatus(""); }} className="text-sm text-violet-600 dark:text-violet-400 hover:underline mt-2">
             Limpiar filtros
           </button>
         </div>

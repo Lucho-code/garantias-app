@@ -1,10 +1,11 @@
-"use client";
+﻿"use client";
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ShieldCheck, LogOut, Plus } from "lucide-react";
+import { LogOut, Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import ThemeToggle from "@/components/ThemeToggle";
+import AppLogo from "@/components/AppLogo";
 
 export default function Navbar({ email }: { email: string }) {
   const router = useRouter();
@@ -21,16 +22,14 @@ export default function Navbar({ email }: { email: string }) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-lg flex items-center justify-center shadow-sm shadow-indigo-200 dark:shadow-indigo-900">
-              <ShieldCheck className="w-4 h-4 text-white" />
-            </div>
+            <AppLogo size={32} />
             <span className="font-bold text-gray-900 dark:text-gray-50 text-lg">GarantíasApp</span>
           </Link>
 
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/garantias/nueva"
-              className="inline-flex items-center gap-1.5 bg-gradient-to-br from-indigo-500 to-indigo-700 hover:opacity-90 text-white text-sm font-medium px-3 sm:px-3.5 py-2 rounded-lg transition-all shadow-sm shadow-indigo-200 dark:shadow-indigo-900/50"
+              className="inline-flex items-center gap-1.5 bg-gradient-to-br from-violet-500 to-violet-700 hover:opacity-90 text-white text-sm font-medium px-3 sm:px-3.5 py-2 rounded-lg transition-all shadow-sm shadow-violet-200 dark:shadow-violet-900/50"
             >
               <Plus className="w-4 h-4" />
               <span className="hidden sm:inline">Nueva garantía</span>
@@ -39,10 +38,10 @@ export default function Navbar({ email }: { email: string }) {
             <div className="flex items-center gap-1 pl-2 sm:pl-3 border-l border-gray-200 dark:border-gray-700">
               <ThemeToggle />
               <div
-                className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center shrink-0 cursor-default"
+                className="w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center shrink-0 cursor-default"
                 title={email}
               >
-                <span className="text-xs font-semibold text-indigo-700 dark:text-indigo-300">
+                <span className="text-xs font-semibold text-violet-700 dark:text-violet-300">
                   {email.charAt(0).toUpperCase()}
                 </span>
               </div>

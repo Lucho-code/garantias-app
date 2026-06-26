@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import ShareButton from "@/components/ShareButton";
@@ -37,7 +37,7 @@ export default async function WarrantyDetailPage({ params }: { params: Promise<{
             <ShareButton shareToken={warranty.share_token} />
             <Link
               href={`/garantias/${id}/editar`}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-2 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-violet-600 bg-violet-50 hover:bg-violet-100 px-3 py-2 rounded-lg transition-colors"
             >
               <Pencil className="w-3.5 h-3.5" />
               Editar
@@ -96,7 +96,7 @@ export default async function WarrantyDetailPage({ params }: { params: Promise<{
               <img src={warranty.image_url} alt={warranty.name} className="w-full max-h-64 object-contain rounded-lg bg-gray-50" />
             ) : (
               <a href={warranty.image_url} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:underline">
+                className="inline-flex items-center gap-2 text-sm text-violet-600 hover:underline">
                 <FileText className="w-4 h-4" />Ver archivo →
               </a>
             )}
@@ -124,7 +124,7 @@ export default async function WarrantyDetailPage({ params }: { params: Promise<{
               <img src={warranty.receipt_url} alt="Comprobante" className="w-full max-h-64 object-contain rounded-lg bg-gray-50" />
             ) : (
               <a href={warranty.receipt_url} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:underline">
+                className="inline-flex items-center gap-2 text-sm text-violet-600 hover:underline">
                 <FileText className="w-4 h-4" />Ver comprobante →
               </a>
             )}

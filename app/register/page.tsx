@@ -1,11 +1,11 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { ShieldCheck } from "lucide-react";
 import OAuthButtons from "@/components/OAuthButtons";
+import AppLogo from "@/components/AppLogo";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 to-purple-100 dark:from-slate-950 dark:to-slate-900 px-4 transition-colors duration-200">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 max-w-md w-full text-center">
           <div className="text-4xl mb-4">✅</div>
           <h2 className="text-xl font-semibold text-gray-800 mb-2">¡Cuenta creada!</h2>
@@ -46,12 +46,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 to-purple-100 dark:from-slate-950 dark:to-slate-900 px-4 transition-colors duration-200">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl mb-4">
-            <ShieldCheck className="w-8 h-8 text-white" />
-          </div>
+          <div className="flex justify-center mb-4"><AppLogo size={72} /></div>
           <h1 className="text-3xl font-bold text-gray-900">GarantíasApp</h1>
           <p className="text-gray-500 mt-1">Gestiona todas tus garantías</p>
         </div>
@@ -67,7 +65,7 @@ export default function RegisterPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 placeholder="tu@email.com"
               />
             </div>
@@ -79,7 +77,7 @@ export default function RegisterPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 placeholder="Mínimo 6 caracteres"
               />
             </div>
@@ -91,7 +89,7 @@ export default function RegisterPage() {
                 required
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 placeholder="••••••••"
               />
             </div>
@@ -105,7 +103,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-medium py-2.5 rounded-lg transition-colors"
+              className="w-full bg-violet-600 hover:bg-violet-700 disabled:opacity-60 text-white font-medium py-2.5 rounded-lg transition-colors"
             >
               {loading ? "Creando cuenta..." : "Crear cuenta"}
             </button>
@@ -122,7 +120,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
             ¿Ya tenés cuenta?{" "}
-            <Link href="/login" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+            <Link href="/login" className="text-violet-600 dark:text-violet-400 font-medium hover:underline">
               Iniciar sesión
             </Link>
           </p>

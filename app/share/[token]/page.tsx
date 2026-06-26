@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { Warranty, getWarrantyStatus, getDaysRemaining } from "@/types/warranty";
 import { formatDate, formatCurrency, STATUS_LABELS, STATUS_COLORS, CATEGORY_ICONS } from "@/lib/utils";
@@ -21,11 +21,11 @@ export default async function SharePage({ params }: { params: Promise<{ token: s
   const daysRemaining = getDaysRemaining(warranty.expiry_date);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-start justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-violet-100 flex items-start justify-center px-4 py-12">
       <div className="w-full max-w-lg">
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-200 text-sm text-gray-500">
-            <ShieldCheck className="w-4 h-4 text-indigo-500" />
+            <ShieldCheck className="w-4 h-4 text-violet-500" />
             Compartido desde <span className="font-semibold text-gray-700">GarantíasApp</span>
           </div>
         </div>
@@ -86,7 +86,7 @@ export default async function SharePage({ params }: { params: Promise<{ token: s
         {warranty.receipt_url && (
           <div className="bg-white rounded-2xl border border-gray-200 p-5 mb-4">
             <a href={warranty.receipt_url} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:underline">
+              className="inline-flex items-center gap-2 text-sm text-violet-600 hover:underline">
               <FileText className="w-4 h-4" />Ver comprobante →
             </a>
           </div>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -98,7 +98,7 @@ export default function WarrantyForm({ initial, mode, userId }: Props) {
     router.refresh();
   }
 
-  const inputCls = "w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent";
+  const inputCls = "w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent";
   const labelCls = "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1";
   const cardCls  = "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700/50 rounded-xl p-6 space-y-5 transition-colors duration-200";
 
@@ -168,7 +168,7 @@ export default function WarrantyForm({ initial, mode, userId }: Props) {
           </div>
           <div>
             <label className={labelCls}>Vencimiento calculado</label>
-            <div className="px-3 py-2.5 bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700/50 rounded-lg text-sm font-medium text-indigo-700 dark:text-indigo-300">
+            <div className="px-3 py-2.5 bg-violet-50 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-700/50 rounded-lg text-sm font-medium text-violet-700 dark:text-violet-300">
               {expiryDate}
             </div>
           </div>
@@ -179,8 +179,8 @@ export default function WarrantyForm({ initial, mode, userId }: Props) {
             <button key={m} type="button" onClick={() => set("warranty_months", m)}
               className={`py-1.5 text-sm rounded-lg border transition-colors ${
                 form.warranty_months === m
-                  ? "bg-indigo-600 text-white border-indigo-600"
-                  : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-600 hover:border-indigo-400"
+                  ? "bg-violet-600 text-white border-violet-600"
+                  : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-600 hover:border-violet-400"
               }`}>
               {m} meses
             </button>
@@ -224,7 +224,7 @@ export default function WarrantyForm({ initial, mode, userId }: Props) {
             Cancelar
           </button>
           <button type="submit" disabled={loading}
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium bg-gradient-to-br from-indigo-500 to-indigo-700 hover:opacity-90 text-white rounded-lg transition-all shadow-sm shadow-indigo-200 dark:shadow-indigo-900/50 disabled:opacity-60">
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium bg-gradient-to-br from-violet-500 to-violet-700 hover:opacity-90 text-white rounded-lg transition-all shadow-sm shadow-violet-200 dark:shadow-violet-900/50 disabled:opacity-60">
             <Save className="w-4 h-4" />
             {loading ? "Guardando..." : mode === "create" ? "Guardar garantía" : "Actualizar"}
           </button>

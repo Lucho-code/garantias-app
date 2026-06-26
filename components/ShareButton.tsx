@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Share2, Copy, Check } from "lucide-react";
@@ -42,7 +42,7 @@ export default function ShareButton({ shareToken }: { shareToken: string }) {
               <button
                 onClick={copy}
                 className={`shrink-0 inline-flex items-center gap-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
-                  copied ? "bg-emerald-600 text-white" : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                  copied ? "bg-emerald-600 text-white" : "bg-violet-600 hover:bg-violet-700 text-white"
                 }`}
               >
                 {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}

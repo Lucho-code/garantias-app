@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Calendar, Store, Tag, ChevronRight } from "lucide-react";
 import { Warranty, getWarrantyStatus, getDaysRemaining } from "@/types/warranty";
 import { formatDate, STATUS_LABELS, STATUS_COLORS, STATUS_DOT, CATEGORY_ICONS } from "@/lib/utils";
@@ -9,12 +9,12 @@ export default function WarrantyCard({ warranty }: { warranty: Warranty }) {
 
   return (
     <Link href={`/garantias/${warranty.id}`}>
-      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700/50 rounded-xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-indigo-200 dark:hover:border-indigo-700 transition-all group cursor-pointer">
+      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700/50 rounded-xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-violet-200 dark:hover:border-violet-700 transition-all group cursor-pointer">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
             <span className="text-2xl">{CATEGORY_ICONS[warranty.category] ?? "📦"}</span>
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-indigo-700 dark:group-hover:text-indigo-400 transition-colors">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-violet-700 dark:group-hover:text-violet-400 transition-colors">
                 {warranty.name}
               </h3>
               {(warranty.brand || warranty.model) && (
@@ -24,7 +24,7 @@ export default function WarrantyCard({ warranty }: { warranty: Warranty }) {
               )}
             </div>
           </div>
-          <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors mt-0.5 shrink-0" />
+          <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-violet-500 dark:group-hover:text-violet-400 transition-colors mt-0.5 shrink-0" />
         </div>
 
         <div className="flex flex-wrap gap-2 mb-3">
